@@ -22,6 +22,8 @@
  * For more details, see http://www.derekmolloy.ie/
  */
 
+// Modified by BM on 2017-5-30
+
 #include "util.h"
 #include<iostream>
 #include <stdio.h>
@@ -31,6 +33,9 @@ using namespace std;
 
 namespace exploringBB {
 
+/* Constructor */
+UTIL::UTIL(){}
+
 /**
  * Helper write function that writes a single string value to a file in the path provided
  * @param path The sysfs path of the file to be modified
@@ -38,7 +43,7 @@ namespace exploringBB {
  * @param value The value to be written to the file
  * @return
  */
-int write(string path, string filename, string value){
+int UTIL::write(string path, string filename, string value){
    ofstream fs;
    fs.open((path + filename).c_str());
    if (!fs.is_open()){
@@ -56,7 +61,7 @@ int write(string path, string filename, string value){
  * @param filename Filename The file to be written to in that path
  * @return
  */
-string read(string path, string filename){
+string UTIL::read(string path, string filename){
    ifstream fs;
    fs.open((path + filename).c_str());
    if (!fs.is_open()){
@@ -75,11 +80,13 @@ string read(string path, string filename){
  * @param value The int value to be written to the file
  * @return
  */
-int write(string path, string filename, int value){
+int UTIL::write(string path, string filename, int value){
    stringstream s;
    s << value;
    return write(path,filename,s.str());
 }
 
+/* Destructor */
+UTIL::~UTIL(){}
 
 } /* namespace exploringBB */

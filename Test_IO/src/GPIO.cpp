@@ -25,6 +25,8 @@
  * For more details, see http://www.derekmolloy.ie/
  */
 
+// Modified by BM on 2017-5-30
+
 #include "GPIO.h"
 #include<iostream>
 #include<fstream>
@@ -44,7 +46,7 @@ namespace exploringBB {
  *
  * @param number The GPIO number for the BBB
  */
-GPIO::GPIO(int number, string const description) {  // modified BM 20170526
+GPIO::GPIO(int number, string const description) : UTIL(){  // modified BM 20170526
 	this->number = number;
 	this->description = description;
 	this->debounceTime = 0;
@@ -62,7 +64,7 @@ GPIO::GPIO(int number, string const description) {  // modified BM 20170526
 	usleep(250000); // 250ms delay
 }
 
-int GPIO::write(string path, string filename, string value){
+/*int GPIO::write(string path, string filename, string value){
    ofstream fs;
    fs.open((path + filename).c_str());
    if (!fs.is_open()){
@@ -90,7 +92,7 @@ int GPIO::write(string path, string filename, int value){
    stringstream s;
    s << value;
    return this->write(path,filename,s.str());
-}
+}*/
 
 int GPIO::exportGPIO(){
    return this->write(GPIO_PATH, "export", this->number);

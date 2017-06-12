@@ -22,6 +22,8 @@
  * For more details, see http://www.derekmolloy.ie/
  */
 
+// Modified by BM on 2017-5-30
+
 #include "PWM.h"
 #include "util.h"
 #include <cstdlib>
@@ -39,7 +41,7 @@
 using namespace std;
 namespace exploringBB {
 
-PWM::PWM(int number) {
+PWM::PWM(int number): UTIL(){   // UTIL parent class constructed before PWM child class
 	this->number = number;
 	this->analogFrequency = 100000;
 	this->analogMax = 3.3;
@@ -54,8 +56,7 @@ PWM::PWM(int number) {
 }
 
 int PWM::exportPWM(){
-	return write(PWM_PATH, "export", this->number);
-	//return write(PWM_PATH, "export", this->name);
+	return this->write(PWM_PATH, "export", this->number);
 }
 
 int PWM::unexportPWM(){
@@ -63,11 +64,11 @@ int PWM::unexportPWM(){
 }
 
 int PWM::setPeriod(unsigned int period_ns){
-	return write(this->path, PWM_PERIOD, period_ns);
+	return this->write(this->path, PWM_PERIOD, period_ns);
 }
 
 unsigned int PWM::getPeriod(){
-	return atoi(read(this->path, PWM_PERIOD).c_str());
+	return atoi(this->read(this->path, PWM_PERIOD).c_str());
 }
 
 float PWM::period_nsToFrequency(unsigned int period_ns){
@@ -89,7 +90,7 @@ float PWM::getFrequency(){
 }
 
 int PWM::setDutyCycle(unsigned int duty_ns){
-	return write(this->path, PWM_DUTY, duty_ns);
+	return this->write(this->path, PWM_DUTY, duty_ns);
 }
 
 int PWM::setDutyCycle(float percentage){
@@ -101,7 +102,7 @@ int PWM::setDutyCycle(float percentage){
 }
 
 unsigned int PWM::getDutyCycle(){
-	return atoi(read(this->path, PWM_DUTY).c_str());
+	return atoi(this->read(this->path, PWM_DUTY).c_str());
 }
 
 float PWM::getDutyCyclePercent(){
@@ -111,7 +112,7 @@ float PWM::getDutyCyclePercent(){
 }
 
 int PWM::setPolarity(PWM::POLARITY polarity){
-	return write(this->path, PWM_POLARITY, polarity);
+	return this->write(this->path, PWM_POLARITY, polarity);
 }
 
 void PWM::invertPolarity(){
@@ -120,7 +121,7 @@ void PWM::invertPolarity(){
 }
 
 PWM::POLARITY PWM::getPolarity(){
-	if (atoi(read(this->path, PWM_POLARITY).c_str())==0) return PWM::ACTIVE_LOW;
+	if (atoi(this->read(this->path, PWM_POLARITY).c_str())==0) return PWM::ACTIVE_LOW;
 	else return PWM::ACTIVE_HIGH;
 }
 
@@ -139,16 +140,16 @@ int PWM::analogWrite(float voltage){
 }
 
 int PWM::run(){
-	return write(this->path, PWM_RUN, 1);
+	return this->write(this->path, PWM_RUN, 1);
 }
 
 bool PWM::isRunning(){
-	string running = read(this->path, PWM_RUN);
+	string running = this->read(this->path, PWM_RUN);
 	return (running=="1");
 }
 
 int PWM::stop(){
-	return write(this->path, PWM_RUN, 0);
+	return this->write(this->path, PWM_RUN, 0);
 }
 
 PWM::~PWM() {

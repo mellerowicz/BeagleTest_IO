@@ -34,6 +34,7 @@
 
 #include<string>
 #include<fstream>
+#include "util.h"
 using std::string;
 using std::ofstream;
 
@@ -46,7 +47,7 @@ enum GPIO_DIRECTION{ INPUT, OUTPUT };
 enum GPIO_VALUE{ LOW=0, HIGH=1 };
 enum GPIO_EDGE{ NONE, RISING, FALLING, BOTH };
 
-class GPIO {
+class GPIO : public UTIL {
 private:
 	int number, debounceTime;
 	string name, path, description;
@@ -86,11 +87,11 @@ public:
 	virtual ~GPIO();  //destructor will unexport the pin
 
 private:
-	int write(string path, string filename, string value);
-	int write(string path, string filename, int value);
-	string read(string path, string filename);
-	int exportGPIO();
-	int unexportGPIO();
+	//int write(string path, string filename, string value);
+	//int write(string path, string filename, int value);
+	//string read(string path, string filename);
+	int exportGPIO();		// BM: move to UTIL parent class
+	int unexportGPIO();		// BM: move to UTIL parent class
 	ofstream stream;
 	pthread_t thread;
 	CallbackType callbackFunction;

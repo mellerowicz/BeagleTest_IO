@@ -22,6 +22,8 @@
  * For more details, see http://www.derekmolloy.ie/
  */
 
+// Modified by BM on 2017-5-30
+
 #ifndef UTIL_H_
 #define UTIL_H_
 #include<string>
@@ -29,12 +31,15 @@ using std::string;
 
 namespace exploringBB {
 
+class UTIL {
+	public:
+		UTIL();
+		int write(string path, string filename, string value);
+		int write(string path, string filename, int value);
+		string read(string path, string filename);
+		virtual ~UTIL();
 
-int write(string path, string filename, string value);
-int write(string path, string filename, int value);
-string read(string path, string filename);
-
-
+};
 } /* namespace exploringBB */
 
 #endif /* UTIL_H_ */

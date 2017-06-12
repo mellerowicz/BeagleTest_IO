@@ -17,7 +17,7 @@
 #include "PWM.h"
 using namespace exploringBB;
 using namespace std;
-#define NUM_OUTPUTS 4
+#define NUM_OUTPUTS 5
 
 
 int main() {
@@ -30,8 +30,11 @@ int main() {
 	}
 	//GPIO outGPIO(49); //inGPIO(115);
 	//outGPIO.streamOpen();
+	GPIO inGPIO(20, "MDCM FAULT");
+	inGPIO.setActiveHigh();
+	inGPIO.streamOpen();
 
-	GPIO OUTPUTS[NUM_OUTPUTS]={{27, "ESTOP"},{47, "PZ 5V SWITCH"},{49, "PZ HV SW"},{115, "WATSON SW"}};
+	GPIO OUTPUTS[NUM_OUTPUTS]={{7, "SENSOR 5V SWITCH"},{27, "ESTOP"},{47, "PZ 5V SWITCH"},{49, "PZ HV SSR"},{115, "WATSON SSR"}};
 	for(int i=0; i<NUM_OUTPUTS; i++) {
 		OUTPUTS[i].setDirection(OUTPUT);
 		OUTPUTS[i].setActiveHigh();
@@ -57,9 +60,13 @@ int main() {
 	std::string         user_input;     // User input string
 
 	for(int i=0; i<NUM_OUTPUTS; i++) {
-		std::cout << "GPIO#: " << OUTPUTS[i].getNumber();
+		std::cout << "DO#: " << OUTPUTS[i].getNumber();
 		std::cout << " - " << OUTPUTS[i].getDescription() << std::endl;
 	}
+
+	std::cout << "DI#: " << inGPIO.getNumber();
+	std::cout << " - " << inGPIO.getDescription() << std::endl;
+
 	std::cout << "PWM#: " << pwm.getName() << std::endl;
 
 	while(go)
@@ -71,8 +78,11 @@ int main() {
 			// PARSE INPUT ------------------------------------------------------------
 			if(!user_input.compare(CMD_GET))
 			{
+				std::cout << "DI#: " << inGPIO.getNumber();
+				std::cout << " - " << inGPIO.getValue() << std::endl;
+
 				for(int i=0; i<NUM_OUTPUTS; i++) {
-					std::cout << "GPIO#: " << OUTPUTS[i].getNumber();
+					std::cout << "DO#: " << OUTPUTS[i].getNumber();
 					std::cout << " - " << OUTPUTS[i].getValue() << std::endl;
 					}
 
@@ -85,7 +95,7 @@ int main() {
 
 			else if(!user_input.compare(CMD_ON))
 			{
-				std::cout << "GPIO#: ";
+				std::cout << "DO#: ";
 				getline(std::cin, user_input);
 				int gpio =  atoi(user_input.c_str());
 
@@ -96,7 +106,7 @@ int main() {
 			}
 			else if(!user_input.compare(CMD_OFF))
 			{
-				std::cout << "GPIO#: ";
+				std::cout << "DO#: ";
 				getline(std::cin, user_input);
 				int gpio =  atoi(user_input.c_str());
 
@@ -122,7 +132,8 @@ int main() {
 			else{}
 		}
 
-	//outGPIO.streamClose();
+	inGPIO.streamClose();
+
 	for(int i=0; i<NUM_OUTPUTS; i++) {
 		OUTPUTS[i].streamClose();
 	}

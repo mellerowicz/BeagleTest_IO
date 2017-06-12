@@ -22,10 +22,13 @@
  * For more details, see http://www.derekmolloy.ie/
  */
 
+// Modified by BM on 2017-5-30
+
 #ifndef PWM_H_
 #define PWM_H_
 #include<string>
 #include<fstream>
+#include "util.h"
 using std::string;
 using std::ofstream;
 
@@ -38,7 +41,8 @@ using std::ofstream;
 
 namespace exploringBB {
 
-class PWM {
+
+class PWM : public UTIL {
 public:
 	enum POLARITY{ ACTIVE_HIGH=0, ACTIVE_LOW=1 };
 
@@ -76,8 +80,8 @@ public:
 private:
 	float period_nsToFrequency(unsigned int);
 	unsigned int frequencyToPeriod_ns(float);
-	int exportPWM();
-	int unexportPWM();
+	int exportPWM();   							// BM: move to UTIL parent class as protected member
+	int unexportPWM();							// BM: move to UTIL parent class as protected member
 };
 
 } /* namespace exploringBB */
